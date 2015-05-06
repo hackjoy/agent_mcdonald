@@ -10,19 +10,55 @@ end
 
 describe Simulation do
 
-  it 'should run the simulation' do
-    allow(Random).to receive(:rand).with(2).and_return(1)
+  describe "environment with size x: 2, y: 1" do
+    describe 'when there is a customer in each location' do
+      it 'should serve all customers when starting from position x: 0' do
+        allow(Random).to receive(:rand).with(2).and_return(1)
 
-    agent = ReflexAgent.new
-    environment = Environment.new
-    simulation = Simulation.new(agent: agent, environment: environment)
-    log_start_test(simulation, 1)
+        agent = ReflexAgent.new(location: { x: 0, y: 0 })
+        environment = Environment.new
+        simulation = Simulation.new(agent: agent, environment: environment)
+        log_start_test(simulation, 1)
 
-    performance = simulation.run
+        performance = simulation.run
 
-    expect(performance).to eq 1.0
+        expect(performance).to eq 1.0
 
-    log_eng_test(simulation, 1)
+        log_eng_test(simulation, 2)
+      end
+
+      it 'should serve all customers when starting from position x: 1' do
+        allow(Random).to receive(:rand).with(2).and_return(1)
+
+        agent = ReflexAgent.new(location: { x: 1, y: 0 })
+        environment = Environment.new
+        simulation = Simulation.new(agent: agent, environment: environment)
+        log_start_test(simulation, 1)
+
+        performance = simulation.run
+
+        expect(performance).to eq 1.0
+
+        log_eng_test(simulation, 2)
+      end
+    end
+
+    describe 'when there are no customers in either location' do
+      it 'should serve all customers when starting from position x: 0' do
+        allow(Random).to receive(:rand).with(2).and_return(0)
+
+        agent = ReflexAgent.new(location: { x: 0, y: 0 })
+        environment = Environment.new
+        simulation = Simulation.new(agent: agent, environment: environment)
+        log_start_test(simulation, 3)
+
+        performance = simulation.run
+
+        expect(agent).not_to receive(:serve_customer)
+        expect(performance).to eq 0.0
+
+        log_eng_test(simulation, 3)
+      end
+    end
   end
-
 end
