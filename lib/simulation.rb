@@ -19,7 +19,7 @@ class Simulation
 
     until agent.total_moves > agent.allowed_moves
       environment.state = agent.action(environment)
-      performance_measure += environment.measure_performance
+      performance_measure += measure_performance(environment)
       environment.state = environment.next_state(environment)
       log_post_step_state
     end
@@ -29,6 +29,30 @@ class Simulation
   end
 
   private
+
+    # Performance measures
+    # TODO: Pass these methods to Simulation.new to keep
+    # simulation class generic
+
+    # TODO: this method should return a hash of performance results
+    def measure_performance(environment)
+      current_number_of_customers_waiting(environment)
+    end
+
+    def current_number_of_customers_waiting(environment)
+      number_of_customers_waiting = 0
+      environment.state.map do |row|
+        row.map do |cell|
+          number_of_customers_waiting += 1 if customer_waiting?(cell[0])
+        end
+      end
+      number_of_customers_waiting
+    end
+
+    def customer_waiting?(value)
+      value == 1
+    end
+
     # Logging methods
 
     def log_starting_state
@@ -43,7 +67,7 @@ class Simulation
         state after #{agent.total_moves} moves: #{environment.state}
         agent action: #{agent.previous_action}
         agent location: #{agent.location}
-        customers_waiting: #{environment.measure_performance}
+        customers_waiting: #{measure_performance(environment)}
       "}
     end
 

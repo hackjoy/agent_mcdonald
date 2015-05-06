@@ -44,23 +44,4 @@ class Environment
     end
   end
 
-  # Performance measures
-
-  def measure_performance
-    current_number_of_customers_waiting
-  end
-
-  def current_number_of_customers_waiting
-    number_of_customers_waiting = 0
-    state.map do |row|
-      row.map do |cell|
-        number_of_customers_waiting += 1 if customer_waiting?(cell[0])
-      end
-    end
-    number_of_customers_waiting
-  end
-
-  def customer_waiting?(value)
-    value == 1
-  end
 end

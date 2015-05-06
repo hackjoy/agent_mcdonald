@@ -4,7 +4,7 @@ def log_start_test(simulation, n)
   simulation.simulation_log.debug "Simulation Test #{n} running..."
 end
 
-def log_eng_test(simulation, n)
+def log_end_test(simulation, n)
   simulation.simulation_log.debug "Simulation Test #{n} ended."
 end
 
@@ -24,7 +24,7 @@ describe Simulation do
 
         expect(performance).to eq 1.0
 
-        log_eng_test(simulation, 2)
+        log_end_test(simulation, 2)
       end
 
       it 'should serve all customers when starting from position x: 1' do
@@ -39,7 +39,7 @@ describe Simulation do
 
         expect(performance).to eq 1.0
 
-        log_eng_test(simulation, 2)
+        log_end_test(simulation, 2)
       end
     end
 
@@ -57,7 +57,7 @@ describe Simulation do
         expect(agent).not_to receive(:serve_customer)
         expect(performance).to eq 0.0
 
-        log_eng_test(simulation, 3)
+        log_end_test(simulation, 3)
       end
     end
   end
