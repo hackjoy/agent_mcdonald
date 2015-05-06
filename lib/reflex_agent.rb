@@ -1,5 +1,7 @@
 require_relative '../config'
 
+# TODO: Create subclass for the randomized reflex agent, hook #run method
+
 class ReflexAgent
   attr_accessor :allowed_moves, :location, :total_moves, :previous_action, :randomized_actions, :actions
 
@@ -7,9 +9,9 @@ class ReflexAgent
     @total_moves = 0
     @allowed_moves = allowed_moves
     @location = { x: 0, y: 0 }
-    @previous_action = nil
     @randomized_actions = randomized_actions
     @actions = ['move_up', 'move_right', 'move_left', 'move_down']
+    @previous_action = nil # used for logging purposes, has no relevance on reflex action chosen
   end
 
   # returns a new environment state
@@ -62,6 +64,7 @@ class ReflexAgent
   # returns environment state where customer has been served in agents current location
   # TODO: this should return a new env state rather than mutating the current one
   def serve_customer(environment)
+    @previous_action = 'served customer'
     environment.state[location[:y]][location[:x]][0] = 0
     environment.state
   end

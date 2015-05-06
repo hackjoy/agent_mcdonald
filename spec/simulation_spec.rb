@@ -1,11 +1,11 @@
 require_relative './spec_helper.rb'
 
 def log_start_test(simulation, n)
-  simulation.simulation_log.debug "Simulation Test #{n} running..."
+  simulation.simulation_log.debug "START: Simulation Test #{n}"
 end
 
 def log_end_test(simulation, n)
-  simulation.simulation_log.debug "Simulation Test #{n} ended."
+  simulation.simulation_log.debug "END: Simulation Test #{n}"
 end
 
 describe Simulation do
