@@ -37,8 +37,17 @@ class ReflexAgent
     !environment.state[location[:y]][location[:x] - 1].nil?
   end
 
+  def can_move_up?(environment)
+    !environment.state[location[:y] - 1][location[:x]].nil?
+  end
+
+  def can_move_down?(environment)
+    !environment.state[location[:y] + 1][location[:x]].nil?
+  end
+
   #
   # Agent Actions
+  #   Actions can be called even if cannot be carried out to support randomized agent.
   #
 
   # returns environment state where customer has been served in agents current location
@@ -50,13 +59,25 @@ class ReflexAgent
 
   # returns the current environment state
   def move_left(environment)
-    location[:x] -= 1
+    location[:x] -= 1 if can_move_right?(environment)
     environment.state
   end
 
   # returns the current environment state
   def move_right(environment)
-    location[:x] += 1
+    location[:x] += 1 if can_move_left?(environment)
+    environment.state
+  end
+
+  # returns the current environment state
+  def move_up(environment)
+    location[:y] -= 1 if can_move_up?(environment)
+    environment.state
+  end
+
+  # returns the current environment state
+  def move_down(environment)
+    location[:y] += 1 if can_move_down?(environment)
     environment.state
   end
 end
