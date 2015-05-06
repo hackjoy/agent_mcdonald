@@ -1,13 +1,15 @@
 require_relative '../config'
 
 class ReflexAgent
-  attr_accessor :allowed_moves, :location, :total_moves, :previous_action
+  attr_accessor :allowed_moves, :location, :total_moves, :previous_action, :randomized_actions, :actions
 
-  def initialize(allowed_moves: 2, location: { x: 0, y: 0 })
+  def initialize(allowed_moves: 2, location: { x: 0, y: 0 }, randomized_actions: false)
     @total_moves = 0
     @allowed_moves = allowed_moves
     @location = { x: 0, y: 0 }
     @previous_action = nil
+    @randomized_actions = randomized_actions
+    @actions = ['move_up', 'move_right', 'move_left', 'move_down']
   end
 
   # returns a new environment state
@@ -15,13 +17,16 @@ class ReflexAgent
     @total_moves += 1
     current_cell = environment.state[location[:y]][location[:x]]
 
-    case current_cell[0] # customer_waiting
-    when 0
-      @previous_action = 'moved right' and return move_right(environment) if can_move_right?(environment)
-      @previous_action = 'moved left' and return move_left(environment) if can_move_left?(environment)
-    when 1
-      @previous_action = 'served customer'
-      serve_customer(environment)
+    if randomized_actions
+      self.send(actions.sample, environment)
+    else
+      case current_cell[0] # customer_waiting
+      when 0
+        return move_right(environment) if can_move_right?(environment)
+        return move_left(environment) if can_move_left?(environment)
+      when 1
+        serve_customer(environment)
+      end
     end
   end
 
@@ -30,18 +35,22 @@ class ReflexAgent
   end
 
   def can_move_right?(environment)
+    environment.state[location[:y]] &&
     !environment.state[location[:y]][location[:x] + 1].nil?
   end
 
   def can_move_left?(environment)
+    environment.state[location[:y]] &&
     !environment.state[location[:y]][location[:x] - 1].nil?
   end
 
   def can_move_up?(environment)
+    environment.state[location[:y] - 1] &&
     !environment.state[location[:y] - 1][location[:x]].nil?
   end
 
   def can_move_down?(environment)
+    environment.state[location[:y] + 1] &&
     !environment.state[location[:y] + 1][location[:x]].nil?
   end
 
@@ -59,24 +68,29 @@ class ReflexAgent
 
   # returns the current environment state
   def move_left(environment)
+    @previous_action = 'moved left'
     location[:x] -= 1 if can_move_right?(environment)
+
     environment.state
   end
 
   # returns the current environment state
   def move_right(environment)
+    @previous_action = 'moved right'
     location[:x] += 1 if can_move_left?(environment)
     environment.state
   end
 
   # returns the current environment state
   def move_up(environment)
+    @previous_action = 'moved up'
     location[:y] -= 1 if can_move_up?(environment)
     environment.state
   end
 
   # returns the current environment state
   def move_down(environment)
+    @previous_action = 'moved down'
     location[:y] += 1 if can_move_down?(environment)
     environment.state
   end

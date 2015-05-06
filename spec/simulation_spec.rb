@@ -43,7 +43,7 @@ describe Simulation do
       end
     end
 
-    describe 'when there are no customers in either location' do
+    describe 'when there are NO customers in either location' do
       it 'should serve all customers when starting from position x: 0' do
         allow(Random).to receive(:rand).with(2).and_return(0)
 
