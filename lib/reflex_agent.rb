@@ -24,8 +24,12 @@ class ReflexAgent
     else
       case current_cell[0] # customer_waiting
       when 0
+        # Reflex Agent is limited - it will move right to left
+        # without some randomization or state to tell it to explore up/down
         return move_right(environment) if can_move_right?(environment)
         return move_left(environment) if can_move_left?(environment)
+        return move_up(environment) if can_move_up?(environment)
+        return move_down(environment) if can_move_down?(environment)
       when 1
         serve_customer(environment)
       end

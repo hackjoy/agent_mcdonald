@@ -1,6 +1,6 @@
 ### Agent McDonald
 
-Agent McDonald is an artificially intelligent waiter with the goal of serving customers as quickly as possible.
+Agent McDonald is a simple Reflex Agent with the goal of serving customers as quickly as possible.
 
 In our 2D environment, each cell is represented as an array of values, where each value relates to an attribute in the environment.
 
